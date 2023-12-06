@@ -73,7 +73,6 @@ def tt_rounding(cores, r):
 
     # FORWARD PASS
     for k in range(0, len(G) - 1):
-        # print(k)
         Gk = G[k]
         Gk_shape = Gk.tensor.shape
         Gk_mat = Gk.tensor.reshape(Gk_shape[0] * Gk_shape[1], Gk_shape[2])
@@ -81,7 +80,6 @@ def tt_rounding(cores, r):
         G[k] = tn.Node(Gk_trunc_mat.reshape((Gk_shape[0], Gk_shape[1], r[k])))
         ed = tn.Node(sigma @ VT)[1] ^ G[k + 1][0]
         G[k + 1] = tn.contract(ed)
-    [print(g.tensor.shape) for g in G]
     return G
 
 
@@ -104,7 +102,7 @@ def attach(cores):
     return connected_edges
 
 
-def TT_to_Tensor(tt_conn_edges):
+def tt_to_tensor(tt_conn_edges):
     """
     Convert a tensor train back into a regular tensor.
 
@@ -118,3 +116,19 @@ def TT_to_Tensor(tt_conn_edges):
     for edge in tt_conn_edges:
         M = tn.contract(edge)
     return tn.Node(M.tensor.reshape((M.tensor.shape[1:][:-1])))
+
+
+def t_norm(node):
+    """
+    Calculate the Frobenius norm of a tensor represented by a TensorNetwork node.
+
+    The Frobenius norm, often used in tensor computations, is the square root of the sum of the squares of all elements in the tensor.
+
+    Args:
+    node (tn.Node): A node representing a tensor in the tensor network.
+
+    Returns:
+    float: The Frobenius norm of the tensor.
+    """
+    squared_sum = np.sum(node.tensor * node.tensor)
+    return np.sqrt(squared_sum)
