@@ -1,4 +1,6 @@
 # TensorTrainALG
+## About
+This project was an outcome of the UC Berkeley Mathematics Directed Reading Program. This project was built under the guidance of PhD student Michael Kielstra.
 
 ## Description
 `TensorTrainALG.py` is a Python script focused on advanced tensor operations, leveraging tensor train algorithms and singular value decomposition (SVD). It is designed for use in areas like machine learning, data analysis, and scientific computing and depends on the `numpy` and `tensornetwork` libraries.
